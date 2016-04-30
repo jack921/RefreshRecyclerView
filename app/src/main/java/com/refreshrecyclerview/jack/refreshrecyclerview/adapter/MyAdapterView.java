@@ -12,9 +12,6 @@ import com.refreshrecyclerview.jack.refreshrecyclerview.model.Bean;
 import com.refreshrecyclerview.jack.refreshrecyclerview.widget.RecyclerViewAdapter;
 import java.util.List;
 
-/**
- */
-
 public class MyAdapterView extends RecyclerViewAdapter<Bean,MyAdapterView.MyViewHolder>{
 
     private Context context=null;
@@ -33,7 +30,6 @@ public class MyAdapterView extends RecyclerViewAdapter<Bean,MyAdapterView.MyView
 
     @Override
     public void onBindItemViewHolder(MyViewHolder holder, int position) {
-        Log.e("ListBeanText",listBean.get(position).getText()+"");
         holder.text.setText(listBean.get(position).getText());
     }
 

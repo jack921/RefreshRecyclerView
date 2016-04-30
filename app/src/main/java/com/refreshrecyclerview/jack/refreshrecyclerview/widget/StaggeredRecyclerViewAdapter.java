@@ -2,16 +2,12 @@ package com.refreshrecyclerview.jack.refreshrecyclerview.widget;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.refreshrecyclerview.jack.refreshrecyclerview.R;
-
-/**
- */
 
 public abstract class StaggeredRecyclerViewAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter {
 
@@ -29,13 +25,12 @@ public abstract class StaggeredRecyclerViewAdapter<T, VH extends RecyclerView.Vi
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,int viewType) {
-        Log.e("RecyclerViewType",viewType+"");
         if(TYPE_FOOTER==viewType){
             if(footerView!=null){
-                Log.e("hua","加载footerview");
+                //加载footerview
                 return footerView;
             }else{
-                Log.e("hua","加载默认的footerview");
+                //加载默认的footerview
                 return new StaggereddefaultFooterView(LayoutInflater.from(
                         parent.getContext()).inflate(R.layout.defaultfooterview,parent,false));
             }
@@ -52,22 +47,27 @@ public abstract class StaggeredRecyclerViewAdapter<T, VH extends RecyclerView.Vi
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder,int position) {
         if(holder instanceof StaggereddefaultFooterView||holder instanceof StaggeredUserFooterView){
+            //加载FooterView
+                //默认的FooterView
             if(footerView==null){
-                Log.e("defaultFooterView","defaultFooterView");
                 ((StaggereddefaultFooterView)holder).mProgressBar.setVisibility(View.VISIBLE);
                 ((StaggereddefaultFooterView)holder).mTip.setVisibility(View.VISIBLE);
                 ((StaggereddefaultFooterView)holder).mTip.setText(DefaultText);
             }else{
-                Log.e("hua","加载用户的footview");
-
+                //加载走定义的footview
             }
         }else if(holder instanceof  StaggeredUserHeaderView){
-        }else{
-            if(hasHeader){
+                //加载HeaderView
+        }else {
+                //加载普通的ItemView
+            if(hasHeader==true){
+                //在有HeadrView情况下
                 onBindItemViewHolder((VH)holder,position-1);
             }else{
+                //在没有HeaderView情况下
                 onBindItemViewHolder((VH)holder,position);
             }
+
         }
     }
 
@@ -88,30 +88,43 @@ public abstract class StaggeredRecyclerViewAdapter<T, VH extends RecyclerView.Vi
     }
 
     protected void handleLayoutIfStaggeredGridLayout(RecyclerView.ViewHolder holder, int position) {
-        Log.e("handleposition",position+"");
         if (headerView!=null&&position==0) {
-            Log.e("handleheader","headerview_position");
-            StaggeredGridLayoutManager.LayoutParams p =
-                    (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
+            StaggeredGridLayoutManager.LayoutParams p=(StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
             p.setFullSpan(true);
         }
-        if(hasFooter&&ItemCount==(position)){
-            Log.e("handlefooter","hasFooter_position"+position);
-            StaggeredGridLayoutManager.LayoutParams p =
-                    (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
+
+        //加载既有HeaderView又有FooterView的时候
+        if(hasFooter&&hasHeader&&ItemCount+1==(position)){
+            StaggeredGridLayoutManager.LayoutParams p=(StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
             p.setFullSpan(true);
         }
+
+        //加载只有footerView的时候加载FooterView
+        if(hasFooter&&!hasHeader&&ItemCount==(position)){
+            StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
+            p.setFullSpan(true);
+        }
+
     }
 
     @Override
     public int getItemViewType(int position) {
-        Log.e("ItemViewType_position",position+"");
+        //假如有HeaderView则加载headerView
         if(headerView!=null&&position==0){
             return TYPE_HEADER;
         }
-        if(position==ItemCount&&hasFooter){
+
+        //假如即有HeaderView又有FooterView的加载FooterView
+        if(hasFooter&&hasHeader&&position==ItemCount+1){
             return TYPE_FOOTER;
         }
+
+        //假如没有HeaderView有FooterView的时候加载FooterView
+        if(hasFooter&&!hasHeader&&position==ItemCount){
+            return TYPE_FOOTER;
+        }
+
+        //加载普通的item
         return super.getItemViewType(position);
     }
 

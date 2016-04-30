@@ -30,7 +30,6 @@ public class GridlayoutActivity extends AppCompatActivity {
         mLinearLayout.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup(){
             @Override
             public int getSpanSize(int position) {
-                Log.e("GridLayoutPosition",position+"");
                 if(0==position)
                     return 2;
                 if(listBean.size()==position)
@@ -52,7 +51,7 @@ public class GridlayoutActivity extends AppCompatActivity {
                 if((mLinearLayout.findLastVisibleItemPosition()+1==mLinearLayout.getItemCount())&&
                         (mLinearLayout.getItemCount()>mRecyclerView.getChildCount())){
                     if(footerstatus){
-                        Log.e("hua","滑到最底");
+                        //滑到最底
 //                      myAdapterView.StartFooterView(LayoutInflater.from(context).inflate(R.layout.userfooterview,null));
                         myAdapterView.StartFooterView(null);
                         footerstatus=false;

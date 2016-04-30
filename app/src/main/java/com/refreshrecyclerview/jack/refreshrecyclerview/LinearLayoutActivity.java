@@ -20,8 +20,6 @@ public class LinearLayoutActivity extends AppCompatActivity {
     private MyAdapterView myAdapterView=null;
     private boolean footerstatus=true;
     private Context context=null;
-    int position=0;
-    int count=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +42,7 @@ public class LinearLayoutActivity extends AppCompatActivity {
                 if((mLinearLayout.findLastVisibleItemPosition()+1==mLinearLayout.getItemCount())&&
                         (mLinearLayout.getItemCount()>mRecyclerView.getChildCount())){
                     if(footerstatus){
-                        Log.e("hua","滑到最底");
+                        //滑到最底
 //                      myAdapterView.StartFooterView(LayoutInflater.from(context).inflate(R.layout.userfooterview,null));
                         myAdapterView.StartFooterView(null);
                         footerstatus=false;

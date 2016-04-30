@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import com.refreshrecyclerview.jack.refreshrecyclerview.adapter.StaggeredMyAdapter;
 import com.refreshrecyclerview.jack.refreshrecyclerview.model.Bean;
@@ -39,21 +38,18 @@ public class StaggeredActivity extends AppCompatActivity {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                Log.e("onScrolledX",dx+"");
             }
-
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                Log.e("onScrollState",newState+"");
                 if(SCROLL_STOP==newState&&(StaggeredLayout.getItemCount()>mRecyclerView.getChildCount())){
-                    Log.e("huadon","停止滑动");
+                    //停止滑动
                     int colnum=StaggeredLayout.getColumnCountForAccessibility(null,null);
                     int positions[]=new int[colnum];
                     StaggeredLayout.findLastVisibleItemPositions(positions);
                     for(int i=0;i<positions.length;i++){
                         if(StaggeredLayout.findViewByPosition(positions[i]).getBottom()<=mRecyclerView.getHeight()){
-                            Log.e("huadon","滑到底部了");
+                            //滑到底部了
                             if(footerstatus){
 //                             myAdapterView.StartFooterView(LayoutInflater.from(context).inflate(R.layout.userfooterview,null));
                                 myAdapterView.StartFooterView(null);
@@ -80,7 +76,7 @@ public class StaggeredActivity extends AppCompatActivity {
     }
 
     public void initData(){
-        for(int i=0;i<30;i++){
+        for(int i=0;i<50;i++){
             listBean.add(new Bean("jack"+i));
         }
     }

@@ -1,8 +1,5 @@
 package com.refreshrecyclerview.jack.refreshrecyclerview.model;
 
-/**
- */
-
 public class Bean {
     private String text;
     public Bean(String text) {

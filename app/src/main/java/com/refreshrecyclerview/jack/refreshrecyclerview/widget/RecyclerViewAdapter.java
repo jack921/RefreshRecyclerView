@@ -9,10 +9,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.refreshrecyclerview.jack.refreshrecyclerview.R;
 
-/**
- * Created by Jack on 2016/3/23.
- */
-
 public abstract class RecyclerViewAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter {
 
     public static final int TYPE_FOOTER=Integer.MIN_VALUE;
@@ -29,13 +25,12 @@ public abstract class RecyclerViewAdapter<T, VH extends RecyclerView.ViewHolder>
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,int viewType) {
-        Log.e("RecyclerViewType",viewType+"");
         if(TYPE_FOOTER==viewType){
             if(footerView!=null){
-                Log.e("hua","加载footerview");
+                //载footerview
                 return footerView;
             }else{
-                Log.e("hua","加载默认的footerview");
+                //加载默认的footerview
                 return new defaultFooterView(LayoutInflater.from(
                         parent.getContext()).inflate(R.layout.defaultfooterview,parent,false));
             }
@@ -53,25 +48,23 @@ public abstract class RecyclerViewAdapter<T, VH extends RecyclerView.ViewHolder>
     public void onBindViewHolder(final RecyclerView.ViewHolder holder,int position) {
             if(holder instanceof defaultFooterView||holder instanceof UserFooterView){
                 if(footerView==null){
-                    Log.e("defaultFooterView","defaultFooterView");
                     ((defaultFooterView)holder).mProgressBar.setVisibility(View.VISIBLE);
                     ((defaultFooterView)holder).mTip.setVisibility(View.VISIBLE);
                     ((defaultFooterView)holder).mTip.setText(DefaultText);
                 }else{
-                    Log.e("hua","加载用户的footview");
-                }
+                   //加载自定义的footview");
+    }
             }else if(holder instanceof  UserHeaderView){
 
-            }else{
-                onBindItemViewHolder((VH)holder,position);
-            }
+        }else{
+            onBindItemViewHolder((VH)holder,position);
+        }
     }
 
     @Override
     public int getItemViewType(int position) {
-        Log.e("ItemViewType_position",position+"");
         if(headerView!=null&&position==0){
-            return TYPE_HEADER;
+        return TYPE_HEADER;
         }
         if(position==ItemCount&&hasFooter){
             return TYPE_FOOTER;
