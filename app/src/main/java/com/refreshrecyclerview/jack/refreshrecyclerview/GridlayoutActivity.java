@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import com.refreshrecyclerview.jack.refreshrecyclerview.adapter.MyAdapterView;
+import com.refreshrecyclerview.jack.refreshrecyclerview.interfaces.OnLoadMoreListener;
 import com.refreshrecyclerview.jack.refreshrecyclerview.model.Bean;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 public class GridlayoutActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView=null;
     private List<Bean> listBean=new ArrayList<Bean>();
-    private GridLayoutManager mLinearLayout=null;
+    private GridLayoutManager mGridLayout=null;
     private MyAdapterView myAdapterView=null;
     private boolean footerstatus=true;
     private Context context=null;
@@ -26,50 +27,31 @@ public class GridlayoutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gridlayoutactivity);
         context=this;
-        mLinearLayout=new GridLayoutManager(this,2);
-        mLinearLayout.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup(){
+        initData();
+        mGridLayout=new GridLayoutManager(this,2);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        mRecyclerView.setLayoutManager(mGridLayout);
+        myAdapterView=new MyAdapterView(this);
+        myAdapterView.setListdate(listBean);
+        myAdapterView.setHeaderView(LayoutInflater.from(this).inflate(R.layout.defaultfooterview,null));
+        myAdapterView.setFooterView(LayoutInflater.from(this).inflate(R.layout.defaultfooterview,null));
+        myAdapterView.setDefauLoadView(LayoutInflater.from(this).inflate(R.layout.userfooterview,null));
+        mRecyclerView.setAdapter(myAdapterView);
+        myAdapterView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            public int getSpanSize(int position) {
-                if(0==position)
-                    return 2;
-                if(listBean.size()==position)
-                    return 2;
-                return 1;
+            public void onLoadMore() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run(){
+                        for(int i=0;i<10;i++){
+                            listBean.add(new Bean("jack"+i));
+                        }
+                        myAdapterView.stopLoadMore();
+                    }
+                },3000);
             }
         });
 
-        initData();
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        mRecyclerView.setLayoutManager(mLinearLayout);
-        myAdapterView=new MyAdapterView(this,listBean);
-        myAdapterView.setHeaderView(LayoutInflater.from(context).inflate(R.layout.userfooterview,null));
-        mRecyclerView.setAdapter(myAdapterView);
-        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener(){
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if((mLinearLayout.findLastVisibleItemPosition()+1==mLinearLayout.getItemCount())&&
-                        (mLinearLayout.getItemCount()>mRecyclerView.getChildCount())){
-                    if(footerstatus){
-                        //滑到最底
-//                      myAdapterView.StartFooterView(LayoutInflater.from(context).inflate(R.layout.userfooterview,null));
-                        myAdapterView.StartFooterView(null);
-                        footerstatus=false;
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                for(int i=0;i<3;i++){
-                                    listBean.add(new Bean("new"+i));
-                                }
-                                myAdapterView.StopFooterView();
-                                myAdapterView.setItemCount(listBean.size());
-                                footerstatus=true;
-                            }
-                        },3000);
-                    }
-                }
-            }
-        });
     }
 
     public void initData(){

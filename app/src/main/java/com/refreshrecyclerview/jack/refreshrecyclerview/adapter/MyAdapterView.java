@@ -12,25 +12,23 @@ import com.refreshrecyclerview.jack.refreshrecyclerview.model.Bean;
 import com.refreshrecyclerview.jack.refreshrecyclerview.widget.RecyclerViewAdapter;
 import java.util.List;
 
-public class MyAdapterView extends RecyclerViewAdapter<Bean,MyAdapterView.MyViewHolder>{
+public class MyAdapterView extends RecyclerViewAdapter<Bean>{
 
     private Context context=null;
-    private List<Bean> listBean=null;
 
-    public MyAdapterView(Context context, List<Bean> listBean){
+    public MyAdapterView(Context context){
             this.context=context;
-            this.listBean=listBean;
-            setItemCount(listBean.size());
     }
 
     @Override
-    public MyViewHolder onCreateItemViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateHolder(ViewGroup parent, int viewType) {
         return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.recyclerviewadapter,parent,false));
     }
 
     @Override
-    public void onBindItemViewHolder(MyViewHolder holder, int position) {
-        holder.text.setText(listBean.get(position).getText());
+    public void onBindHolder(RecyclerView.ViewHolder viewHolder, int RealPosition, Bean data) {
+        Log.e("onBindHolder",RealPosition+"");
+        ((MyViewHolder)viewHolder).text.setText(data.getText());
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
