@@ -35,6 +35,7 @@ public class GridlayoutActivity extends AppCompatActivity {
         myAdapterView.setListdate(listBean);
         myAdapterView.setHeaderView(LayoutInflater.from(this).inflate(R.layout.defaultfooterview,null));
         myAdapterView.setFooterView(LayoutInflater.from(this).inflate(R.layout.defaultfooterview,null));
+        myAdapterView.setLoadMore(true,mRecyclerView);
         myAdapterView.setDefauLoadView(LayoutInflater.from(this).inflate(R.layout.userfooterview,null));
         mRecyclerView.setAdapter(myAdapterView);
         myAdapterView.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -55,7 +56,7 @@ public class GridlayoutActivity extends AppCompatActivity {
     }
 
     public void initData(){
-        for(int i=0;i<50;i++){
+        for(int i=0;i<20;i++){
             listBean.add(new Bean("jack"+i));
         }
     }

@@ -32,7 +32,7 @@ public class LinearLayoutActivity extends AppCompatActivity {
         myAdapterView.setListdate(listBean);
         myAdapterView.setHeaderView(LayoutInflater.from(this).inflate(R.layout.defaultfooterview,null));
         myAdapterView.setFooterView(LayoutInflater.from(this).inflate(R.layout.defaultfooterview,null));
-        myAdapterView.setLoadMore(true);
+        myAdapterView.setLoadMore(true,mRecyclerView);
         myAdapterView.setDefauLoadView(LayoutInflater.from(this).inflate(R.layout.userfooterview,null));
         mRecyclerView.setAdapter(myAdapterView);
         myAdapterView.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -53,7 +53,7 @@ public class LinearLayoutActivity extends AppCompatActivity {
     }
 
     public void initData(){
-        for(int i=0;i<10;i++){
+        for(int i=0;i<30;i++){
             listBean.add(new Bean("jack"+i));
         }
     }

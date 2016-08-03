@@ -39,6 +39,8 @@ public abstract class RecyclerViewAdapter<T> extends RecyclerView.Adapter {
     private boolean ListenerStatus=true;
     //true代表设置上拉加载，false代表取消上拉加载
     private boolean LoadMore=false;
+    //RecyclerView对象
+    private RecyclerView recyclerView;
 
     public void setListdate(List<T> data) {
         this.listdate=data;
@@ -61,7 +63,8 @@ public abstract class RecyclerViewAdapter<T> extends RecyclerView.Adapter {
         this.onLoadMoreListener = onLoadMoreListener;
     }
 
-    public boolean setLoadMore(boolean status) {
+    public boolean setLoadMore(boolean status,RecyclerView recyclerView) {
+        this.recyclerView=recyclerView;
         return LoadMore=status;
     }
 
@@ -82,8 +85,6 @@ public abstract class RecyclerViewAdapter<T> extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Log.e("onBindView_p",position+"");
-        Log.e("onBindView_c",getItemCount()+"");
         if(getItemViewType(position)==HeaderViewStatus){
         }else if(getItemViewType(position)==FooterViewStatus){
         }else if(getItemViewType(position)==DefaultLoadMoreStatus){
@@ -101,7 +102,11 @@ public abstract class RecyclerViewAdapter<T> extends RecyclerView.Adapter {
             onBindHolder(holder,pos,listdate.get(pos));
         }
 
-        if(position+1==getItemCount()&&LoadMore==true){
+        Log.e("recyclerview_item",getItemCount()+"");
+        Log.e("recyclerview_child",recyclerView.getChildCount()+"");
+        int test1=getItemCount();
+        int test2=recyclerView.getChildCount();
+        if((position+1)==getItemCount()&&LoadMore==true&&(getItemCount()!=recyclerView.getChildCount()+1)){
             startLoadMore();
         }
 
@@ -109,11 +114,9 @@ public abstract class RecyclerViewAdapter<T> extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        Log.e("itemviewtype",position+"");
         if(HeaderView!=null&&position==0){
             return HeaderViewStatus;
         }
-
         //查看有没有设置上拉加载
         if(LoadMoreStatus){
             if(FooterView!=null&&(AllNum-2)==position){
